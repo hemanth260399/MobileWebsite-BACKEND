@@ -2,7 +2,9 @@ import express from "express";
 import { cartSchema } from "../mongooseDb/addtocart.js";
 import { orderSchema } from "../mongooseDb/placeorder.js";
 import Stripe from "stripe";
-let stripe = new Stripe("sk_test_51Qhvy0FhehZ1BwTfJf2ax99oRbfOtnw9CTCjN85Wrl1kaouGeOtiRntJeyWHcicBtpnvJkEzbCdKgq7zFlb8pU0600yQJqCJdH");
+import dotenv from "dotenv"
+dotenv.config()
+let stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export let cartRouter = express.Router();
 cartRouter.post("/addtocart", async (req, res) => {
   let productData = req.body;
@@ -87,8 +89,8 @@ cartRouter.post("/placeOrder", async (req, res) => {
         payment_method_types: ["card"],
         line_items: placeOrderupdate,
         mode: "payment",
-        success_url: `http://localhost:5173/success`,
-        cancel_url: `http://localhost:5173/cancel`
+        success_url: `${process.env.FE_URL}/success`,
+        cancel_url: `${process.env.FE_URL}/cancel`
       })
       await cartSchema.deleteOne({ _id: data.cartId })
       res.status(200).send({ msg: "Order placed successfully", data: newOrder, stripeSessionId: session })
