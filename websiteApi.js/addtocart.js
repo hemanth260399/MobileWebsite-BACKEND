@@ -90,7 +90,7 @@ cartRouter.post("/placeOrder", async (req, res) => {
         line_items: placeOrderupdate,
         mode: "payment",
         success_url: `${process.env.FE_URL}/success`,
-        cancel_url: `${process.env.FE_URL}/cancel`
+        cancel_url: `${process.env.FE_URL}/reject`
       })
       await cartSchema.deleteOne({ _id: data.cartId })
       res.status(200).send({ msg: "Order placed successfully", data: newOrder, stripeSessionId: session })
