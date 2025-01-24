@@ -18,11 +18,16 @@ app.use(cors(
         methods: 'GET, POST,PUT,DELETE'
     }
 ))
+app.set("trust proxy", 1)
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: {
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        secure: "auto",
+        sameSite: "none"
+    }
 }))
 app.use(passport.initialize());
 app.use(passport.session());
