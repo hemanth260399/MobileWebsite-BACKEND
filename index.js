@@ -25,7 +25,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
         secure: "auto",
-        sameSite: "lax"
+        sameSite: "strict",
     }
 }))
 app.use(passport.initialize());
