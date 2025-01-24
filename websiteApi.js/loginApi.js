@@ -90,9 +90,12 @@ loginServer.post("/changepassword", async (req, res) => {
 loginServer.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }))
 loginServer.get("/auth/google/callback",
     passport.authenticate("google", {
-        successRedirect: `${process.env.FE_URL}/auth/loginSuccess`,
+        successRedirect: "/auth/success",
         failureRedirect: '/auth/login/failure'
     }))
+loginServer.get("/auth/success", (req, res) => {
+    res.redirect(`${process.env.FE_URL}/auth/loginSuccess`)
+})
 loginServer.get("/auth/login/failure", (req, res) => res.status(401).json({ msg: "Failed to authenticate with Google" }))
 loginServer.get("/auth/loginSuccess", (req, res) => {
     let token = jwtToken({ data: req.user.userdata.email }, "1h")
