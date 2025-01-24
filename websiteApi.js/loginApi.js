@@ -98,6 +98,7 @@ loginServer.get("/auth/success", (req, res) => {
 })
 loginServer.get("/auth/login/failure", (req, res) => res.status(401).json({ msg: "Failed to authenticate with Google" }))
 loginServer.get("/auth/loginSuccess", (req, res) => {
+    console.log(req.user)
     try {
         let token = jwtToken({ data: req.user.userdata.email }, "1h")
         res.json({ msg: "Login successful", data: { name: req.user.userdata.name, email: req.user.userdata.email, id: req.user.userdata._id }, token: token })
